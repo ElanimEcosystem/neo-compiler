@@ -726,12 +726,12 @@ namespace Neo.Compiler.MSIL
             {
                 if (this.outModule.option.useNep8)
                 {
-                    int retcount = to.returntype == "System.Void" ? 0 : 1;
+                    int retcount = defs.ReturnType.FullName  == "System.Void" ? 0 : 1;
 
                     byte signature = (byte)(
                         (retcount << 7)
                         |
-                        to.paramtypes.Count
+                        defs.Parameters.Count
                         );
                     var c = _Convert1by1(VM.OpCode.CALL_I, null, to, new byte[] { signature, 0, 0 });
                     c.needfixfunc = true;
