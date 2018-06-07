@@ -766,12 +766,12 @@ namespace Neo.Compiler.MSIL
             {
                 if (this.outModule.option.useNep8)
                 {
-                    int retcount = to.returntype == "System.Void" ? 0 : 1;
+                    int retcount = defs.ReturnType.FullName == "System.Void" ? 0 : 1;
 
                     byte signature = (byte)(
                         (retcount << 7)
                         |
-                        to.paramtypes.Count
+                        defs.Parameters.Count
                         );
 
                     if (callhash.All(v => v == 0))//empty nep4
@@ -821,11 +821,11 @@ namespace Neo.Compiler.MSIL
                 //dyn appcall
                 if (this.outModule.option.useNep8)
                 {
-                    int retcount = to.returntype == "System.Void" ? 0 : 1;
+                    int retcount = defs.ReturnType.FullName == "System.Void" ? 0 : 1;
                     byte signature = (byte)(
                         (retcount << 7)
                         |
-                        to.paramtypes.Count
+                        defs.Parameters.Count
                         );
                     _Convert1by1(VM.OpCode.CALL_ED, null, to, new byte[] { signature });
                 }
