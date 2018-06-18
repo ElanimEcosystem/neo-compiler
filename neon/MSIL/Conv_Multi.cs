@@ -726,14 +726,10 @@ namespace Neo.Compiler.MSIL
             {
                 if (this.outModule.option.useNep8)
                 {
-                    int retcount = defs.ReturnType.FullName  == "System.Void" ? 0 : 1;
+                    byte _pcount = (byte)defs.Parameters.Count;
+                    byte _rvcount = (byte)(defs.ReturnType.FullName == "System.Void" ? 0 : 1);
 
-                    byte signature = (byte)(
-                        (retcount << 7)
-                        |
-                        defs.Parameters.Count
-                        );
-                    var c = _Convert1by1(VM.OpCode.CALL_I, null, to, new byte[] { signature, 0, 0 });
+                    var c = _Convert1by1(VM.OpCode.CALL_I, null, to, new byte[] { _rvcount, _pcount, 0, 0 });
                     c.needfixfunc = true;
                     c.srcfunc = src.tokenMethod;
 
@@ -766,13 +762,9 @@ namespace Neo.Compiler.MSIL
             {
                 if (this.outModule.option.useNep8)
                 {
-                    int retcount = defs.ReturnType.FullName == "System.Void" ? 0 : 1;
+                    byte _pcount = (byte)defs.Parameters.Count;
+                    byte _rvcount = (byte)(defs.ReturnType.FullName == "System.Void" ? 0 : 1);
 
-                    byte signature = (byte)(
-                        (retcount << 7)
-                        |
-                        defs.Parameters.Count
-                        );
 
                     if (callhash.All(v => v == 0))//empty nep4
                     {
@@ -780,7 +772,7 @@ namespace Neo.Compiler.MSIL
                     }
                     else
                     {
-                        var bytes = new byte[] { signature }.Concat(callhash).ToArray();
+                        var bytes = new byte[] { _rvcount, _pcount }.Concat(callhash).ToArray();
                         _Convert1by1(VM.OpCode.CALL_E, null, to, bytes);
 
                     }
@@ -821,13 +813,14 @@ namespace Neo.Compiler.MSIL
                 //dyn appcall
                 if (this.outModule.option.useNep8)
                 {
-                    int retcount = defs.ReturnType.FullName == "System.Void" ? 0 : 1;
-                    byte signature = (byte)(
-                        (retcount << 7)
-                        |
-                        defs.Parameters.Count
-                        );
-                    _Convert1by1(VM.OpCode.CALL_ED, null, to, new byte[] { signature });
+                    byte _pcount = (byte)defs.Parameters.Count;
+                    byte _rvcount = (byte)(defs.ReturnType.FullName == "System.Void" ? 0 : 1);
+                    //byte signature = (byte)(
+                    //    (retcount << 7)
+                    //    |
+                    //    defs.Parameters.Count
+                    //    );
+                    _Convert1by1(VM.OpCode.CALL_ED, null, to, new byte[] { _rvcount, _pcount });
                 }
                 else
                 {
